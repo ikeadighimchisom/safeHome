@@ -1,4 +1,4 @@
-const AddUser = require("../models/user");
+const realUser = require("../models/user");
 const dotenv = require("dotenv")
 dotenv.config({path: "../CONFIG/config.env"})
 const bcryptjs = require("bcryptjs")
@@ -17,7 +17,7 @@ exports.signUpUser = async(req, res) => {
             email,
             password: hash,
         }
-        const createUser = await AddUser(data)
+        const createUser = await realUser(data)
         const myToken = jwt.sign({id:createUser._id,
              password: createUser.password,
               IsAdmin:createUser.isAdmin},
@@ -51,7 +51,7 @@ exports.signUpUser = async(req, res) => {
 exports.login = async (req, res) => {
     try{
         const {email,password} = req.body;
-        const check = await AddUser.findOne({email:email})
+        const check = await realUser.findOne({email:email})
         if(!check) return res.status(404).json({
             message: "Not found"
         })
@@ -79,8 +79,8 @@ exports.login = async (req, res) => {
 exports.UserVerify = async (req, res) => {
     try{    
         const userid = req.params.userid
-        const user = await AddUser.findById(userid)
-        await AddUser.findByIdAndUpdate(
+        const user = await realUser.findById(userid)
+        await realUser.findByIdAndUpdate(
             user._id,
             {
                 verify: true
@@ -104,7 +104,7 @@ exports.UserVerify = async (req, res) => {
 exports.Forgotpassword = async (req, res) => {
     try{
         const {email} = req.body
-        const userEmail = await AddUser.findOne({email})
+        const userEmail = await realUser.findOne({email})
         if(!userEmail) return  res.status(404).json({ message: "No Email" })
         const myToken = jwt.sign({
             id:userEmail._id,
@@ -131,98 +131,14 @@ exports.Forgotpassword = async (req, res) => {
 }
 
 
-exports.verifyUser = async(req,res)=>{
-    try {
-        const userId = req.params.userId;
-        const user = await modelName.findById(userId);
-        await modelName.findByIdAndUpdate(user._id, {
-            verify: true
-        },{
-            new: true
-        });
-        res.status(200).json({
-            message: "U have been verified.."
-        })
-    } catch (error) {
-        res.status(400).json({
-            message: err.message
-        })
-    }
-};
-
-
-exports.Forgotpassword = async (req, res) => {
-    try{
-        const {email} = req.body
-        const userEmail = await AddUser.findOne({email})
-        if(!userEmail) return  res.status(404).json({ message: "incorrect email" })
-        const myToken = jwt.sign({
-            id:userEmail._id,
-            IsAdmin:userEmail.isAdmin}, process.env.JWTSCRET, {expiresIn: "1m"})
-            superAdmin: checkEmail.superAdmin
-
-        const VerifyLink = `${req.protocol}://${req.get("host")}/api/changepassword/${userEmail._id}/${myToken}`
-        const message = `Use this link ${VerifyLink} to change your password`;
-        sendEmail({
-          email: userEmail.email,
-          subject: "Reset Pasword",
-          message,
-        })
-        
-        res.status(202).json({
-            message:"email have been sent"
-        })
-
-        // console.log(userEmail);
-    }catch(err){
-        res.status(400).json({
-            message:err.message
-        })
-    }
-}
-
-
-exports.forgotPassWrd = async(req,res)=>{
-    try{
-        const { email } = req.body;
-        const checkEmail = await modelName.findOne({email});
-        if(!checkEmail){
-            res.status(404).json({
-                message: "Sorry email is not correct.."
-            })
-        }else{
-            const genToken = jwt.sign({
-                id: checkEmail._id,
-                isAdmin: checkEmail.isAdmin,
-                superAdmin: checkEmail.superAdmin
-            }, process.env.JWTSCRET, {expiresIn: "5m"});
-            const verifyUser = `${req.protocol}://${req.get("host")}/api/changePaswrd/${checkEmail._id}/${genToken}`;
-            const message = `Use this link ${verifyUser} to change your password `;
-            mailSender({
-            email: checkEmail.email,
-            subject: "Change of password",
-            message
-        });
-        res.status(200).json({
-            message: "A link has been sent to your email please check.."
-        })
-        }
-    }catch(err){
-        res.status(400).json({
-            message: err.message
-        })
-    }
-};
-
-
 exports.passwordchange= async(req,res)=>{
     try {
         const {password} = req.body;
         const userId = req.params.userId;
         const saltPwd = await bcrypt.genSalt(10);
         const hassPwd = await bcrypt.hash(password, saltPwd);
-        const users = await modelName.findById(userId);
-        await modelName.findByIdAndUpdate(users._id,{
+        const users = await realUser.findById(userId);
+        await realUser.findByIdAndUpdate(users._id,{
             password: hassPwd
         },
         {
@@ -235,3 +151,4 @@ exports.passwordchange= async(req,res)=>{
         })
     }
 };
+
