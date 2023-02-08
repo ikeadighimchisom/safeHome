@@ -48,6 +48,7 @@ exports.GetallFurni = asyncHandler(async (req, res) => {
 }
 )
 
+
 exports.GetSingle = asyncHandler(async (req, res) => {
     try{
         const allFurni = await Addfurni.findById(req.params.id);

@@ -1,4 +1,4 @@
-const AddAdmin = require("../models/user");
+const AddAdmin = require("../models/admin");
 const dotenv = require("dotenv")
 dotenv.config({path: "../CONFIG/config.env"})
 const bcryptjs = require("bcryptjs")
@@ -17,8 +17,8 @@ exports.AdminSignUp = async(req, res) => {
             email,
             password: hash,
         }
-        const createUser = await AddAdmin(data)
-        AddAdmin.isAdmin = true;
+        const createUser = new AddAdmin(data)
+        createUser.isAdmin = true;
         const myToken = jwt.sign({id:createUser._id,
              password: createUser.password,
              isAdmin:createUser.isAdmin},

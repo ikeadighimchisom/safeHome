@@ -2,13 +2,13 @@ require("dotenv").config();
 const dotenv = require("dotenv")
 const express = require("express")
 dotenv.config({path: "./CONFIG/config.env"})
-const adminRoute = require('./ROUTE/adminrotue');
+const routes = require("./ROUTE/adminrotue")
 const user = require ('./ROUTE/UserRoute')
 const Auth = require('./ROUTE/AddUser')
 const Authen = require("./ROUTE/addAdmin")
 const importData = require("./Dataimport")
 const {errorHandler, notfound} = require("./middleware/errorhand");
- const orderRouter= require("./controller/orderpro");
+//  const orderRouter= require("./controller/orderpro");
  const cors = require("cors")
  const fileUpload = require('express-fileupload');
 
@@ -27,10 +27,10 @@ app.use("/api/import", importData)
 
 app.use('/api', Auth);
 app.use("/api", Authen)
-app.use('/api', adminRoute);
+app.use('/api', routes);
 app.use("/api", user)
 
-app.use("/api/orders",orderRouter)
+// app.use("/api",orderRouter)
 // Router.route("/import", importData )
 
 app.use(notfound)

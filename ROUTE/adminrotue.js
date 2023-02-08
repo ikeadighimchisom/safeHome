@@ -1,21 +1,17 @@
 const express = require('express');
-const {IsAdminAuth} = require('../tils/authorization');
+const {realAdmin} = require('../helper/auth');
 
-const {NewPro,DeleteFurni,UpdateFurni,orderRouter} = require('../controller/prodt');
+const {NewPro,DeleteFurni,UpdateFurni} = require('../controller/prodt');
 
 
 const router = express.Router();
 
-router.post('/admin/:id', IsAdminAuth, NewPro)
+router.route('/admin/:userId').post( NewPro)
 
-router.delete('/admin/:id/:productid', IsAdminAuth, DeleteFurni)
+router.delete('/admin/:userId/:productid',realAdmin, DeleteFurni)
 
-router.patch('/admin/:id/:productid', IsAdminAuth, UpdateFurni)
-
- router.post('/admin/:id/',IsAdminAuth,  function(req, res){
-    orderRouter})
+router.patch('/admin/:userid/:productid',realAdmin, UpdateFurni)
 
 
 
-
-module.exports = router
+module.exports = router;

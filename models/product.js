@@ -20,8 +20,8 @@ const productSchema = mongoose.Schema(
         required: [true, "price is required"],
     },
      rating:{ 
-        type: String,
-         required: [true, "rating is required"],
+        type: Number,
+         default: 0,
       },
       numReview:{ 
         type: String,

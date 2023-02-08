@@ -25,17 +25,7 @@ const orderSchema = new mongoose.Schema ({
         postalCode: { type: String, require: true},
         country: { type: Number, require: true},
     },
-    paymentMethod: {
-        type: String,
-         required: true,
-         default: "master card, velve, paypal",
-    },
-    paymentResult: {
-        id: {type: String},
-        status: {type: String},
-        update_time: {type: String},
-        email_address: {type: String},
-    },
+   
     taxprice: {
         type: String,
         required: true,
@@ -46,11 +36,7 @@ const orderSchema = new mongoose.Schema ({
         required: true,
         default: 0.0,
     },
-    shippingPrice: {
-        type: String,
-        required: true,
-        default: 0.0,
-    },
+
     totalPrice: {
         type: String,
         required: true,
