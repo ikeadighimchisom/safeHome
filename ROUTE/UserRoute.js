@@ -1,13 +1,13 @@
 const express = require('express')
-const {GetallFurni,GetSingle,Order} = require('../controller/prodt')
-
+const {GetallFurni} = require('../controller/prodt')
+const {newOrder} = require('../controller/orderpro');
 
 const router = express.Router();
 
 
 router.route('/user').get(GetallFurni)
-router.route('/get/:id').get(GetSingle)
-// router.route('/order/:id').post(Order)
+// router.route('/get/:id').get(GetSingle)
+ router.route('/order/:id').post(newOrder)
 
 module.exports = router
 

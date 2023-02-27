@@ -1,61 +1,71 @@
 const express = require("express");
 const asyncHandler = require ("express-async-handler");
-const Order = require("./../models/Order");
+const Order = require("../models/Order");
 
+exports.newOrder = asyncHandler (async (req, res) => {
+    try{
+    const Id = req.params.userId;
+    const {quantity,customerAddress,phoneNumber,customerName,customerEmail} = req.body;
+    const orderProduct = {
+        quantity,
+        customerAddress,
+        phoneNumber,
+        customerName, 
+        customerEmail,
+        }
+        const created = await Order.create(orderProduct);
+        res.status(201).json({
+            message: "Order placed successful",
+            data: created
+        });
+    }catch(e){
+        res.status(400).json({
+            message: e.message
+        });
+    }
+}
+)
 
-
-
-
-exports.order = asyncHandler (async (req, res) => {
-        const{
-            orderItems,
-            shippingAddress,
-            paymentMethod,
-            paymentResult,
-            taxprice,
-            shippingPrice,
-            itemPrice,
-            totalPrice,
-        
-        } = req.body
-        if(orderItems && orderItems.length === 0) {
-            res.status(400).json({
-                message: "items not order",
-    }) 
-        return
-    } else{
-        const order = new Order({
-            orderItems,
-            shippingAddress,
-            paymentMethod,
-            paymentResult,
-            taxprice,
-            shippingPrice,
-            itemPrice,
-            totalPrice
+exports.getOrder = asyncHandler  (async(req, res) => {
+    try{
+        const allOrder = await Order.find();
+        res.status(201).json({
+            message: "Order was gotten",
+            length: allOrder.length,
+            data: allOrder,
         })
-        const createOrder = await order.save();
-            res.status(201).json({
-                data: createOrder
-            })
+    } catch(error) {
+        res.status(404).json({
+            message: error.message
+        })
     }
-     })
+})
 
-    
-     //get order
 
-     asyncHandler (async (req, res) => {
-        const order = await order.findById(req.params.id).populate(
-            "name",
-            "email"
-        );
-    if(order){
-        res.status(order)
-    }else{
-        throw new Error("order not found")
+exports.getOneOrder = asyncHandler(async(req,res) => {
+    try{
+        const Id = req.params.Id;
+       const order = await Order.findById(Id)
+        res.status(200).json({
+            message: "Single Order was successful",
+            data: order
+        })
+    }catch(error){
+        res.status(401).json({
+            message: error.message
+        })
     }
-    })
-    
-             
-// module.exports = orderRouter;
-
+})
+exports.deleteOrder = asyncHandler(async(req,res) => {
+    try{ 
+        const orderId = req.params.orderId;
+        await Order.findByIdAndDelete(orderId);
+        res.status(200).json({
+            message: "Order has been deleted",
+        })
+    }catch(error){
+        res.status(401).json({
+            message: error.message
+        })
+    }
+})

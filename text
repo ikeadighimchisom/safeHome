@@ -10,3 +10,58 @@ EMAILPASSWORD=xmwtahpirkgnsfmn
 cloudinary name : dcjhdnm3y
 key: 298829313587928
 cloudkey: knmhs9UqyoPclmCRiCC8DdOvwe4
+
+
+const mongoose = require("mongoose");
+const express = require("express");
+const router = express.Router();
+
+// Product Schema
+const ProductSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  ratingsCount: {
+    type: Number,
+    default: 0,
+  },
+});
+
+// Product Model
+const Product = mongoose.model("Product", ProductSchema);
+
+// Route to rate a product
+router.post("/:id/rate", async (req, res) => {
+  const productId = req.params.id;
+  const newRating = req.body.rating;
+
+  try {
+    // Find the product
+    const product = await Product.findById(productId);
+
+    // Update the rating and ratings count
+    product.rating = (product.rating * product.ratingsCount + newRating) / (product.ratingsCount + 1);
+    product.ratingsCount += 1;
+
+    // Save the product
+    await product.save();
+
+    // Return the updated product
+    res.status(200).json({
+      message: "Product rated successfully!",
+      product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to rate product!",
+      error: error.message,
+    });
+  }
+});
+
+module.exports = router;

@@ -14,7 +14,7 @@ const checkUser = async(req,res,next)=>{
         })
       }else{
         const authToken = user.token;
-        console.log(authToken)
+        // console.log(authToken)
         if(!authToken){
             res.status(400).json({
                 message: "Not autorized"
@@ -42,23 +42,34 @@ exports.realAdmin = (req,res,next)=>{
         if(req.user.isAdmin){
             next()
         }else{
-            res.status(400).json({
+            res.status(401).json({
                 message: "you are not authorized for now"
             })
         }
     })
 };
 
+exports.IsSuperAdmin = async(req,res,next)=>{
+        checkUser(req,res, ()=>{
+            if(req.user.isSuperAdmin){
+            next()
+            }else{
+                res.status(401).json({
+                    message: "Sorry you are not authorized to perform this.. "
+                })
+            }
+        })
+    };
+
 exports.isUser = (req,res,next)=>{
     checkUser(req,res,()=>{
         if(!req.user.isAdmin){
             next()
         }else{
-            res.status(400).json({
+            res.status(401).json({
                 message: "sorry you are not authorized"
             })
         }
     })
 };
-
 

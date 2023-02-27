@@ -1,16 +1,16 @@
 const express = require('express');
+const router = express.Router();
 const {realAdmin} = require('../helper/auth');
 
 const {NewPro,DeleteFurni,UpdateFurni} = require('../controller/prodt');
 
 
-const router = express.Router();
 
-router.route('/admin/:userId').post( NewPro)
+router.route('/admin/:userId/:categoryId').post(NewPro)
 
 router.delete('/admin/:userId/:productid',realAdmin, DeleteFurni)
 
-router.patch('/admin/:userid/:productid',realAdmin, UpdateFurni)
+router.route('/admin/:userId/:id').patch(realAdmin,UpdateFurni)
 
 
 

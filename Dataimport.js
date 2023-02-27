@@ -1,8 +1,8 @@
 const express = require ("express");
 const user = require("./models/user");
-const users = require("./Data/user");
+// const users = require("./Data/user");
 const product = require("./models/product");
-const products = require("./Data/product");
+// const products = require("./Data/product");
 const asyncHandler = require ("express-async-handler");
 
 

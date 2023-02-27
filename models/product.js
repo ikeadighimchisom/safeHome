@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const productSchema = mongoose.Schema(
-    {
+    { 
     title: {
         type: String,
         required: [true, "title is required"]
@@ -28,9 +28,13 @@ const productSchema = mongoose.Schema(
         required: [true, "numReview is required"]
       },
       stockQuantity:{ 
-        type: String,
-        required: [true, "stockQuantity is required"]
+        type: Number,
+        default: 0,
       },
+      categories: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "cates",
+      }],
 },
 {
     timestamps: true

@@ -8,9 +8,14 @@ const Auth = require('./ROUTE/AddUser')
 const Authen = require("./ROUTE/addAdmin")
 const importData = require("./Dataimport")
 const {errorHandler, notfound} = require("./middleware/errorhand");
-//  const orderRouter= require("./controller/orderpro");
- const cors = require("cors")
- const fileUpload = require('express-fileupload');
+const orderRouter = require("./ROUTE/order");
+const cateRouter = require("./ROUTE/catRoute")
+const commentRouter = require("./ROUTE/commentRoute")
+const router = require("./ROUTE/ratingRout")
+const stockRouter = require("./ROUTE/InStockRoute")
+const superRoutes = require("./ROUTE/SuperAdmin")
+const cors = require("cors")
+const fileUpload = require('express-fileupload');
 
 
 const app = express ();
@@ -29,8 +34,12 @@ app.use('/api', Auth);
 app.use("/api", Authen)
 app.use('/api', routes);
 app.use("/api", user)
-
-// app.use("/api",orderRouter)
+app.use("/api",commentRouter)
+app.use("/api", superRoutes)
+app.use("/api",orderRouter)
+app.use("/api",cateRouter)
+app.use("/api",router)
+app.use("/api",stockRouter)
 // Router.route("/import", importData )
 
 app.use(notfound)

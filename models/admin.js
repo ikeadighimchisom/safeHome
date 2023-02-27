@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    fullname: {
+    fullName: {
         type: String,
         require: [true, "fullname is required"]
     },
@@ -22,12 +22,14 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
      },
-
     isAdmin: {  
+        type: Boolean,
+        default: true
+    },
+    isSuperAdmin: {  
         type: Boolean,
         default: false
     },
-
     token: {
         type: String,
     }

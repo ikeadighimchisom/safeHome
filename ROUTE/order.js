@@ -1,11 +1,17 @@
-// const express = require("express");
-// const asyncHandler = require ("express-async-handler");
-// // const orderRouter = require("./../ROUTE/order");
-//  const protect = require("../middleware/errorhand")
-// const {order} = require('../controller/orderpro');
+const express = require("express");
 
-// const orderRouter = express.Router()
+const orderRouter = express.Router()
 
-// orderRouter.post("/admin", order)
+const {newOrder,getOrder,deleteOrder,getOneOrder} = require('../controller/orderpro');
+const {realAdmin} = require("../helper/auth")
 
-// exports.module = orderRouter;
+
+
+
+orderRouter.post("/order/:userId",newOrder)
+orderRouter.get("/order/:adminId",getOrder)
+orderRouter.delete("/order/:adminId/:orderId",deleteOrder)
+orderRouter.get("/order/:adminId/:Id",getOneOrder)
+
+module.exports = orderRouter;
+
