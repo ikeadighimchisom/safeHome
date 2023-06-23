@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const orderSchema = new mongoose.Schema ({
+const orderSchema = mongoose.Schema ({
    quantity: {
     type: Number,
     required: [true, "quantity is required"],

@@ -1,26 +1,35 @@
 const express = require("express");
 const asyncHandler = require ("express-async-handler");
 const Order = require("../models/Order");
+const mailSender = require("../tils/Emails");
+
 
 exports.newOrder = asyncHandler (async (req, res) => {
     try{
-    const Id = req.params.userId;
+    const Id = req.params.Id;
     const {quantity,customerAddress,phoneNumber,customerName,customerEmail} = req.body;
     const orderProduct = {
         quantity,
         customerAddress,
         phoneNumber,
-        customerName, 
+        customerName,  
         customerEmail,
-        }
+        } 
         const created = await Order.create(orderProduct);
+            const delivered = `${req.protocol}://${req.get("host")}/api/delivered/${orderProduct._id}`
+            const message = `There value customer, your order have been recieve and will be delivered to you in your address your have input in your form you filled. Please click on this link ${delivered} if you have successfully recieved the goods. Thanks for patronizing us @Safe_Home-Furniture`;
+            mailSender({
+            email: orderProduct.email,
+            subject: "Order Placed is complete",
+            message,
+        });
         res.status(201).json({
             message: "Order placed successful",
             data: created
         });
     }catch(e){
         res.status(400).json({
-            message: e.message
+            message: e.message  
         });
     }
 }

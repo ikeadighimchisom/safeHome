@@ -8,7 +8,7 @@ const {realAdmin} = require("../helper/auth")
 
 
 
-orderRouter.post("/order/:userId",newOrder)
+orderRouter.post("/order/:Id",newOrder)
 orderRouter.get("/order/:adminId",getOrder)
 orderRouter.delete("/order/:adminId/:orderId",deleteOrder)
 orderRouter.get("/order/:adminId/:Id",getOneOrder)

@@ -32,36 +32,70 @@ const ProductSchema = new mongoose.Schema({
   },
 });
 
-// Product Model
-const Product = mongoose.model("Product", ProductSchema);
-
-// Route to rate a product
-router.post("/:id/rate", async (req, res) => {
-  const productId = req.params.id;
-  const newRating = req.body.rating;
-
+exports.NewCates = asyncHandler(async (req, res) => {
   try {
-    // Find the product
-    const product = await Product.findById(productId);
-
-    // Update the rating and ratings count
-    product.rating = (product.rating * product.ratingsCount + newRating) / (product.ratingsCount + 1);
-    product.ratingsCount += 1;
-
-    // Save the product
-    await product.save();
-
-    // Return the updated product
-    res.status(200).json({
-      message: "Product rated successfully!",
-      product,
+    const productId = req.params.productId;
+    const products = await ProductCates.findById(productId);
+    const category = await Cates.create({ categoryName: req.body.categoryName });
+    res.status(201).json({
+      message: "Categories successful",
+      data: category,
     });
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to rate product!",
-      error: error.message,
+  } catch (e) {
+    res.status(400).json({
+      message: e.message,
     });
   }
 });
 
-module.exports = router;
+// get allCategory
+exports.getAllCates = asyncHandler  (async(req, res) => {
+  try{
+      const category = req.params.category;
+      const allCategory = await Cates.find();
+      res.status(201).json({
+          message: "Category was gotten",     
+          length: allCategory.length,
+          data: allCategory,
+      })
+  } catch(error) {
+      res.status(404).json({
+          message: error.message
+      })
+  } 
+})
+
+// get product by category
+exports.getCategoryByName = async (req, res) => {
+  try {
+    const categoryName = req.params.category;
+    const categories = await Cates.find({ name: categoryName });
+    if (categories.length === 0) {
+      return res.status(201).json('No categories found with that name');
+    }
+    const categoryIds = categories.map(category => category._id);
+    const similarCategories = await Cates.find( { name: categoryName });
+    res.json(similarCategories);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+exports.getProductByCateName = async (req, res) => {
+  try {
+      const category = req.params.category;
+      const products = await product.findOne({ category: category });
+      res.status(201).json({
+          message: "Product category was successful",
+          data: products
+      })
+    } catch (error) {
+      res.status(404).json({
+        message: error.message,
+      });
+    }
+};
+
+
+// get category by name

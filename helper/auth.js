@@ -9,7 +9,7 @@ const checkUser = async(req,res,next)=>{
       const userId = req.params.userId;
       const user = await modelName.findById(userId)
       if(!user){
-        res.status(400).json({
+        res.status(400).json({ 
             message: "you aren't Autorized"
         })
       }else{

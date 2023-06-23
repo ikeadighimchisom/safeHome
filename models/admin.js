@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: [true, "order is require"]
     },
+       products:[{
+       type: mongoose.Schema.Types.ObjectId,
+        ref: "product"
+     }],
     verify: { 
         type: Boolean,
         default: false
@@ -30,6 +34,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    // role: {  
+    //     type: [realAdmin,isSuperAdmin],
+    //     default: true
+    // },
     token: {
         type: String,
     }

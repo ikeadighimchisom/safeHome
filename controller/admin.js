@@ -13,9 +13,9 @@ exports.AdminSignUp = async(req, res) => {
         const hash = bcryptjs.hashSync(password, salt);
 
         const data = {
-            fullName,  
+            fullName,   
             email,
-            password: hash,
+            password: hash, 
         }
         const createUser = new AddAdmin(data)
         createUser.isAdmin = true; 
@@ -324,14 +324,14 @@ exports.allAdmin = async(req,res)=>{
 exports.singleUser = async(req,res)=>{
     try {
         const userId = req.params.userId;
-        const single = await AddAdmin.findById(userId);
+        const single = await AddAdmin.findById(userId).populate("products");
         if(single.length === 0){
             res.status(404).json({
                 message: `User with this id: ${userId} not found...`
             })
         }else{
             res.json({
-                data: single
+                data: single 
             })
         }
 

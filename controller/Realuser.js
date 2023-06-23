@@ -28,7 +28,7 @@ exports.signUpUser = async(req, res) => {
             const checker = await realUser.findOne({fullname,email})
             if(checker){
             res.status(400).json({
-                message: "Email already taken..." 
+                message: "Email already taken..."  
             })
         }else{
             await createUser.save();

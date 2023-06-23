@@ -4,12 +4,7 @@ const cateSchema = new mongoose.Schema ({
     categoryName: {
         type: String,
         require: [true, "categoryName must be specified."]
-    }, 
-    products: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'product',
-        // required: [true,"productCategory name is required"],
-    }],     
+    },
    },
    
    {

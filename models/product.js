@@ -31,10 +31,15 @@ const productSchema = mongoose.Schema(
         type: Number,
         default: 0,
       },
-      categories: [{
+      AddAdmin: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "cates",
-      }],
+        ref: "AddAdmin"
+     },
+      categories: {
+        type: Array,
+        // ref: "cates",
+        required: [true, "categories is required"]
+      },
 },
 {
     timestamps: true
