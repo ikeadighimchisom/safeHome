@@ -4,7 +4,7 @@ const express = require("express")
 dotenv.config({path: "./CONFIG/config.env"})
 const routes = require("./ROUTE/adminrotue")
 const user = require ('./ROUTE/UserRoute')
-const Auth = require('./ROUTE/AddUser')
+//const Auth = require('./ROUTE/Adduser')
 const Authen = require("./ROUTE/addAdmin")
 const importData = require("./Dataimport")
 const {errorHandler, notfound} = require("./middleware/errorhand");
@@ -30,7 +30,7 @@ app.use(fileUpload({
 app.use("/api/import", importData)
 
 
-app.use('/api', Auth);
+//app.use('/api', Auth);
 app.use("/api", Authen)
 app.use('/api', routes);
 app.use("/api", user)
