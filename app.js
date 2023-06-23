@@ -7,7 +7,6 @@ const user = require ('./ROUTE/UserRoute')
 //const Auth = require('./ROUTE/Adduser')
 const Authen = require("./ROUTE/addAdmin")
 const importData = require("./Dataimport")
-const {errorHandler, notfound} = require("./middleware/errorhand");
 const orderRouter = require("./ROUTE/order");
 const cateRouter = require("./ROUTE/catRoute")
 const commentRouter = require("./ROUTE/commentRoute")
@@ -41,9 +40,6 @@ app.use("/api",cateRouter)
 app.use("/api",router)
 app.use("/api",stockRouter)
 // Router.route("/import", importData )
-
-app.use(notfound)
-app.use(errorHandler)
 
 app.use("/", (req, res) => {
     res.status(200).send("My Api is working fine")
